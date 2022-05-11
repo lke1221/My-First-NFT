@@ -17,9 +17,12 @@
   },
   "homepage": "https://github.com/lke1221/My-First-NFT#readme",
   "devDependencies": {
+    "@nomiclabs/hardhat-ethers": "^2.0.5",
+    "ethers": "^5.6.5",
     "hardhat": "^2.9.3"
   },
   "dependencies": {
+    "@alch/alchemy-web3": "^1.4.2",
     "@openzeppelin/contracts": "^4.6.0",
     "dotenv": "^16.0.1"
   }

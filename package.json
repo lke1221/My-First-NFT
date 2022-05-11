@@ -1,0 +1,22 @@
+{
+  "name": "my-nft",
+  "version": "1.0.0",
+  "description": "My First NFT!",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lke1221/My-First-NFT.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lke1221/My-First-NFT/issues"
+  },
+  "homepage": "https://github.com/lke1221/My-First-NFT#readme",
+  "devDependencies": {
+    "hardhat": "^2.9.3"
+  }
+}

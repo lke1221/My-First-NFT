@@ -20,7 +20,7 @@ contract MyNFT is ERC721URIStorage, Ownable {
         _tokenIds.increment();
 
         uint256 newItemId = _tokenIds.current();
-        _mint(recipient, newItemId);
+        _safeMint(recipient, newItemId); //mint를 safemint로 바꿈
         _setTokenURI(newItemId, tokenURI);
 
         return newItemId;

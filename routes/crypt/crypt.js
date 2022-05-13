@@ -109,6 +109,8 @@ const saveEncryptedFile = (buffer, fileDir, fileName) => {
     }
     fs.writeFileSync(jsonFilePath, JSON.stringify(data))
 
+    return encrypted_result.masterKey;
+
 }
 
 module.exports.encrypt = encrypt;

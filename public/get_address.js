@@ -1,6 +1,6 @@
 const ethereumButton = document.querySelector('.enableEthereumButton');
 const sendEthButton = document.querySelector('.sendEthButton');
-const submitButton = document.querySelector('.submitFile');
+const testDecrypt = document.querySelector('.testDecrypt');
 
 let accounts = [];
 let encryptionPublicKey;
@@ -9,9 +9,17 @@ sendEthButton.addEventListener('click', () => {
     get_pk();
 });
 
-submitButton.addEventListener('submit', () => {
-    const input_file = document.querySelector('.input_file');
-    get_pk(input_file);
+testDecrypt.addEventListener('click', () => {
+    var encryptedMessage = ; //필요할 때 채워넣을 것
+    ethereum
+    .request({
+    method: 'eth_decrypt',
+    params: [encryptedMessage, accounts[0]],
+    })
+    .then((decryptedMessage) =>
+    console.log('The decrypted message is:', decryptedMessage)
+    )
+    .catch((error) => console.log(error.message));
 });
 
 async function get_pk() {

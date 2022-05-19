@@ -62,18 +62,18 @@ const saveEncryptedFile = (buffer, fileDir, fileName) => {
         fs.mkdirSync(fileDir)
     }
 
-    var encrypted_result = encrypt(buffer)
+    const encrypted_result = encrypt(buffer)
 
-    var date = Date.now(); //중복 방지 위해서 날짜
-    var fileName_no_ext = path.parse(fileName).name
-    var extension = path.parse(fileName).ext
+    const date = Date.now(); //중복 방지 위해서 날짜
+    const fileName_no_ext = path.parse(fileName).name
+    const extension = path.parse(fileName).ext
 
-    var result = encrypted_result.result
-    var result_len = result.length
+    const result = encrypted_result.result
+    const result_len = result.length
 
     var filePath_for_json = ""
     for(var i=0; i<result.length; i++){
-        encrypted_fileName = fileDir+fileName_no_ext+'_'+result_len+'_'+i+extension
+        const encrypted_fileName = fileDir+fileName_no_ext+'_'+result_len+'_'+i+extension
         filePath_for_json = filePath_for_json+encrypted_fileName+" "
         fs.writeFileSync(encrypted_fileName, result[i])
     }
@@ -99,7 +99,7 @@ const saveEncryptedFile = (buffer, fileDir, fileName) => {
 
     //NFT에 넣을 JSON file 생성하는 방법 : 매개변수로 encrypted_result.masterKey 줄 것
     //json 파일 이름을 tokenId 넣어서 정해야할 것 같은데 (중복 방지) 일단은 테스트 목적으로 정함. 나중에 수정 필요
-    var jsonFilePath = fileDir+fileName_no_ext+'_'+date+'.json'
+    const jsonFilePath = fileDir+fileName_no_ext+'_'+date+'.json'
     const data = {
         "description": "My NFT", //필요할까?
         "external_url": "https://forum.openzeppelin.com/t/create-an-nft-and-deploy-to-a-public-testnet-using-truffle/2961", //필요할까?

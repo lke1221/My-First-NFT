@@ -1,14 +1,14 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 router.use(express.json());
-var multer = require('multer');
-var crypto = require('./crypt/crypt');
+const multer = require('multer');
+const crypto = require('./crypt/crypt');
 
 const ethUtil = require('ethereumjs-util');
 const sigUtil = require('@metamask/eth-sig-util');
 
-var storage = multer.memoryStorage();
-var uploadFile = multer({ storage: storage });
+const storage = multer.memoryStorage();
+const uploadFile = multer({ storage: storage });
 
 var masterKey;
 

@@ -2,29 +2,21 @@ const ethereumButton = document.querySelector('.enableEthereumButton');
 const sendEthButton = document.querySelector('.sendEthButton');
 const testDecrypt = document.querySelector('.testDecrypt');
 
-let accounts = [];
-let encryptionPublicKey;
+// let accounts = [];
+// let encryptionPublicKey;
 
 sendEthButton.addEventListener('click', () => {
     get_pk();
 });
 
 testDecrypt.addEventListener('click', () => {
-    var encryptedMessage = ; //필요할 때 채워넣을 것
-    ethereum
-    .request({
-    method: 'eth_decrypt',
-    params: [encryptedMessage, accounts[0]],
-    })
-    .then((decryptedMessage) =>
-    console.log('The decrypted message is:', decryptedMessage)
-    )
-    .catch((error) => console.log(error.message));
+    decrypt_with_pk();
 });
 
 async function get_pk() {
+    let accounts = [];
     accounts = await ethereum.request({ method: 'eth_requestAccounts' });
-    // ethereum
+    // ethereums
     // .request({
     //     method: 'eth_sendTransaction',
     //     params: [
@@ -74,4 +66,18 @@ function mint_token(pk){
     });
 }
 
+async function decrypt_with_pk() {
+    let accounts = [];
+    accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+    var encryptedMessage = "0x7b2276657273696f6e223a227832353531392d7873616c736132302d706f6c7931333035222c226e6f6e6365223a2264523533735a55413655437465476d2f626b7a495039425949676b5070793646222c22657068656d5075626c69634b6579223a2274734e62397a4e6e7237376b476a4376314c44523830672b6c754851734f614a63654c33693758425a31773d222c2263697068657274657874223a22467667707946582b6c4f5a75497a4162677577524e676648645a573031673d3d227d"; //필요할 때 채워넣을 것
+    ethereum
+    .request({
+    method: 'eth_decrypt',
+    params: [encryptedMessage, accounts[0]],
+    })
+    .then((decryptedMessage) =>
+    console.log('The decrypted message is:', decryptedMessage)
+    )
+    .catch((error) => console.log(error.message));
+}
   

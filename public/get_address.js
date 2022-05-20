@@ -27,7 +27,7 @@ async function get_pk(masterKey) {
     params: [accounts[0]], // you must have access to the specified account
     })
     .then((result) => {
-        mint_token(result, accounts[0], masterKey);
+        encrypt_masterkey(result, accounts[0], masterKey);
     })
     .catch((error) => {
     if (error.code === 4001) {
@@ -39,7 +39,7 @@ async function get_pk(masterKey) {
     });
 }
 
-function mint_token(pk, address, masterKey){
+function encrypt_masterkey(pk, address, masterKey){
     // ajax 대신 socket 통신으로 해결
     // $.ajax({
     //     type: 'POST',
@@ -54,7 +54,7 @@ function mint_token(pk, address, masterKey){
     //       console.log(xhr.responseText);
     //     }
     // });
-    socket.emit('mint_token', pk, address, masterKey);
+    socket.emit('encrypt_masterkey', pk, address, masterKey);
 }
 ///
 

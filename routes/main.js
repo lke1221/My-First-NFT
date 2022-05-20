@@ -43,7 +43,7 @@ router.post('/uploadFile', uploadFile.single('userFile'), function(req, res){
 
       socket.emit('get_pk', masterKey)
 
-      socket.on('mint_token', (pk, address, masterKey)=>{
+      socket.on('encrypt_masterkey', (pk, address, masterKey)=>{
         const encryptedKey = ethUtil.bufferToHex(
           Buffer.from(
             JSON.stringify(

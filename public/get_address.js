@@ -1,43 +1,33 @@
-const ethereumButton = document.querySelector('.enableEthereumButton');
-const sendEthButton = document.querySelector('.sendEthButton');
+//const sendEthButton = document.querySelector('.sendEthButton');
 const testDecrypt = document.querySelector('.testDecrypt');
 
-// let accounts = [];
-// let encryptionPublicKey;
+const contractAddress = "0xf29AC9223B51261E478fDd4827E95466e629De82"
 
-sendEthButton.addEventListener('click', () => {
-    get_pk();
+const socket = io.connect('http://localhost:3000', {
+    path: '/socket.io',
+    transports:['websocket']
 });
 
-testDecrypt.addEventListener('click', () => {
-    decrypt_with_pk();
+socket.on('get_pk', (masterKey)=>{
+    get_pk(masterKey);
+    // socket.disconnect();
 });
 
-async function get_pk() {
+socket.on('make_transaction', (txData)=>{
+    make_transaction(txData);
+})
+
+async function get_pk(masterKey) {
     let accounts = [];
     accounts = await ethereum.request({ method: 'eth_requestAccounts' });
-    // ethereums
-    // .request({
-    //     method: 'eth_sendTransaction',
-    //     params: [
-    //     {
-    //         from: accounts[0],
-    //         to: '0x2f318C334780961FB129D2a6c30D0763d9a5C970',
-    //         value: '0x29a2241af62c0000',
-    //         gasPrice: '0x09184e72a000',
-    //         gas: '0x2710',
-    //     },
-    //     ],
-    // })
-    // .then((txHash) => console.log(txHash))
-    // .catch((error) => console.error);
+    
     ethereum
     .request({
     method: 'eth_getEncryptionPublicKey',
     params: [accounts[0]], // you must have access to the specified account
     })
     .then((result) => {
-        mint_token(result);
+        mint_token(result, accounts[0], masterKey);
     })
     .catch((error) => {
     if (error.code === 4001) {
@@ -49,22 +39,54 @@ async function get_pk() {
     });
 }
 
-function mint_token(pk){
-    alert(pk);
-    $.ajax({
-        type: 'POST',
-        url: 'http://localhost:3000/encrypt_then_mint',
-        data: JSON.stringify({"pk" : pk }),
-        datatype: 'json',
-        contentType: 'application/json; charset=utf-8',
-        success: function(response) { 
-         console.log(response);
-        },
-        error: function(xhr, status, err) {
-          console.log(xhr.responseText);
-        }
-    });
+function mint_token(pk, address, masterKey){
+    // ajax 대신 socket 통신으로 해결
+    // $.ajax({
+    //     type: 'POST',
+    //     url: 'http://localhost:3000/encrypt_then_mint',
+    //     data: JSON.stringify({"pk" : pk , "address" : address, "masterKey" : masterKey}),
+    //     datatype: 'json',
+    //     contentType: 'application/json; charset=utf-8',
+    //     success: function(response) { 
+    //      console.log("전송 성공");
+    //     },
+    //     error: function(xhr, status, err) {
+    //       console.log(xhr.responseText);
+    //     }
+    // });
+    socket.emit('mint_token', pk, address, masterKey);
 }
+///
+
+async function make_transaction(txData) {
+    let accounts = [];
+    accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+
+    ethereum
+    .request({
+        method: 'eth_sendTransaction',
+        params: [
+            {
+                from: accounts[0],
+                to: contractAddress, //contract address
+                // value: '',
+                // gasPrice: '',
+                // gas: '',
+                data: txData
+            },
+        ],
+    })
+    .then((txHash) => console.log(txHash))
+    .catch((error) => console.log(error));
+}
+
+// sendEthButton.addEventListener('click', () => {
+//     get_pk(); //현재 get_pk()와 매개변수 다름 주의. masterKey를 넘겨받고 안받고 차이.
+// });
+
+testDecrypt.addEventListener('click', () => {
+    decrypt_with_pk();
+});
 
 async function decrypt_with_pk() {
     let accounts = [];

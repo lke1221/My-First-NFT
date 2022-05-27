@@ -1,4 +1,15 @@
 <form class="submitFile" id = "uploadFile" enctype = "multipart/form-data" action = "/uploadFile" method = "post">
-	<input class="inputFile" type="file" name="userFile" />
+	<div class="name">
+		<label for="contentName">파일명</label>
+		<input class="contentName" type="text" name="contentName" required/>
+	</div>
+	<div class="author">
+		<label for="contentAuthor">작가 이름</label>
+		<input class="contentAuthor" type="text" name="contentAuthor" required/>
+	</div>
+	<div class="fileSelect">
+		<label for="userFile">업로드할 파일</label>
+		<input class="inputFile" type="file" name="userFile" required/>
+	</div>
 	<input class="submitButton" type="submit" value="Upload File" name="submit">
 </form>

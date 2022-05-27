@@ -1,23 +1,25 @@
 //const sendEthButton = document.querySelector('.sendEthButton');
 const testDecrypt = document.querySelector('.testDecrypt');
 
-const contractAddress = "0xf29AC9223B51261E478fDd4827E95466e629De82"
-
 const socket = io.connect('http://localhost:3000', {
     path: '/socket.io',
     transports:['websocket']
 });
 
-socket.on('get_pk', (masterKey)=>{
-    get_pk(masterKey);
+socket.on('get_pk_and_address', ()=>{
+    get_pk_and_address();
     // socket.disconnect();
 });
 
-socket.on('make_transaction', (txData)=>{
-    make_transaction(txData);
+socket.on('make_CNFT_transaction', (contract_address, txData)=>{
+    make_CNFT_transaction(contract_address, txData);
 })
 
-async function get_pk(masterKey) {
+socket.on('make_KNFT_transaction', (contract_address, txData)=>{
+    make_KNFT_transaction(contract_address, txData);
+})
+
+async function get_pk_and_address() {
     let accounts = [];
     accounts = await ethereum.request({ method: 'eth_requestAccounts' });
     
@@ -27,7 +29,7 @@ async function get_pk(masterKey) {
     params: [accounts[0]], // you must have access to the specified account
     })
     .then((result) => {
-        encrypt_masterkey(result, accounts[0], masterKey);
+        socket.emit('address_and_pk_back', result, accounts[0]);
     })
     .catch((error) => {
     if (error.code === 4001) {
@@ -39,26 +41,26 @@ async function get_pk(masterKey) {
     });
 }
 
-function encrypt_masterkey(pk, address, masterKey){
-    // ajax 대신 socket 통신으로 해결
-    // $.ajax({
-    //     type: 'POST',
-    //     url: 'http://localhost:3000/encrypt_then_mint',
-    //     data: JSON.stringify({"pk" : pk , "address" : address, "masterKey" : masterKey}),
-    //     datatype: 'json',
-    //     contentType: 'application/json; charset=utf-8',
-    //     success: function(response) { 
-    //      console.log("전송 성공");
-    //     },
-    //     error: function(xhr, status, err) {
-    //       console.log(xhr.responseText);
-    //     }
-    // });
-    socket.emit('encrypt_masterkey', pk, address, masterKey);
-}
+// function encrypt_masterkey(pk, address, masterKey){
+//     // ajax 대신 socket 통신으로 해결
+//     // $.ajax({
+//     //     type: 'POST',
+//     //     url: 'http://localhost:3000/encrypt_then_mint',
+//     //     data: JSON.stringify({"pk" : pk , "address" : address, "masterKey" : masterKey}),
+//     //     datatype: 'json',
+//     //     contentType: 'application/json; charset=utf-8',
+//     //     success: function(response) { 
+//     //      console.log("전송 성공");
+//     //     },
+//     //     error: function(xhr, status, err) {
+//     //       console.log(xhr.responseText);
+//     //     }
+//     // });
+//     socket.emit('encrypt_masterkey', pk, address, masterKey);
+// }
 ///
 
-async function make_transaction(txData) {
+async function make_CNFT_transaction(contractAddress, txData) {
     let accounts = [];
     accounts = await ethereum.request({ method: 'eth_requestAccounts' });
 
@@ -76,7 +78,29 @@ async function make_transaction(txData) {
             },
         ],
     })
-    .then((txHash) => console.log(txHash))
+    .then((txHash) => socket.emit('CNFT_transaction_back', txHash))
+    .catch((error) => console.log(error));
+}
+
+async function make_KNFT_transaction(contractAddress, txData) {
+    let accounts = [];
+    accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+
+    ethereum
+    .request({
+        method: 'eth_sendTransaction',
+        params: [
+            {
+                from: accounts[0],
+                to: contractAddress, //contract address
+                // value: '',
+                // gasPrice: '',
+                // gas: '',
+                data: txData
+            },
+        ],
+    })
+    .then((txHash) => console.log("KNFT transaction complete!", txHash))
     .catch((error) => console.log(error));
 }
 

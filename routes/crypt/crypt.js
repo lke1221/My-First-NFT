@@ -23,7 +23,6 @@ const encrypt = (buffer) => { //암호화하기 위해 쪼개는 함수
     //const masterKey = '123456'    //반드시 고쳐야함! 임시. 랜덤으로 생성하게 하는 게 나을듯?
     const masterKey = crypto.randomBytes(64).toString('hex'); // Message data must be given as a string
     MK = masterKey; //decrypt 테스트 위해 임시로 사용
-    console.log(masterKey);
 
     const sliced_cipher = []
     for(let i=0; buffer.length > SLICE_SIZE;){
@@ -77,8 +76,10 @@ const saveEncryptedFile = (buffer, fileDir, fileName) => {
     const result_len = result.length
 
     var filePath_for_json = ""
+    const encrypted_file_names = []
     for(var i=0; i<result.length; i++){
         const encrypted_fileName = fileDir+fileName_no_ext+'_'+result_len+'_'+i+extension
+        encrypted_file_names.push(encrypted_fileName)
         filePath_for_json = filePath_for_json+encrypted_fileName+" "
         fs.writeFileSync(encrypted_fileName, result[i])
     }
@@ -114,7 +115,7 @@ const saveEncryptedFile = (buffer, fileDir, fileName) => {
     }
     fs.writeFileSync(jsonFilePath, JSON.stringify(data))
 
-    return encrypted_result.masterKey;
+    return [encrypted_result.masterKey, encrypted_file_names];
 
 }
 

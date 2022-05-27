@@ -88,3 +88,9 @@ contract의 storage에 보관된다.
 * 블록체인 지갑 생성 시 무작위 문자가 생김 => 개인키 (256bit 숫자)  
 * 이 개인키에 타원곡선 암호 알고리즘을 적용 => 공개키 (256bit 숫자)  
 * 공개키에 해시함수(keccak-256)를 적용하여 => 지갑 주소  
+</br>
+
+## import와 require의 차이  
+import: ES6 모듈. 사용자가 필요한 부분만 선택해서 로드 가능. Babel과 같은 변환 도구가 필요하다.  
+require: CommonJS를 사용하는 node.js문. 필요한 부분만 선택해서 로드 불가능.  
+**둘은 동시 사용 불가능하다. import 사용을 위해서는 package.json에 `"type":"module"`을 추가해야하는데, 이러면 require사용이 불가능하다.**

@@ -43,6 +43,12 @@ Content NFT 발급 transaction의 hash가 key NFT에 올라감으로써 두 NFT�
 * 원래 transaction hash가 아닌 tokenID를 기록할 계획이었으나, transaction 요청을 위해 Metamask RPC API를 사용하다보니 confirm 될 때까지 기다리는 데 어려움이 있었습니다. confirm이 된 후에야 tokenID를 알 수 있기 때문에 tokenID 대신 transaction hash로 대체하였습니다. web3를 이용하면 confirm 될 때까지 기다릴 수 있는 것 같아서 시도해보았지만ㅡ 브라우저 지갑인 metamask와의 연결이 쉽지 않아서 일단 남겨뒀습니다. **나중에 시도해볼 것**  
 </br>
 
+## On chain 방식으로 기록되는 내용  
+Content NFT: 컨텐츠 제목, 작가 이름, 파일 저장 위치 (metadata로 저장 후에 tokenURI로 주는 편이 나을 것 같지만..)  
+Key NFT: 지갑 개인키로 암호화된 masterkey, Content NFT 생성 transaction의 해시 값  
+(Content NFT의 대상이 되는 파일이 masterkey로 암호화되어 있고, 이 masterkey가 지갑 개인키로 한 번 더 암호화된 상황)  
+</br>
+
 ## Socket.io  
 해당 프로젝트에서는 서버와 클라이언트의 통신을 위해 처음에는 Ajax를 사용했다가, 이후 Socket.io로 변경하였습니다.  
 프로젝트를 진행하면서 배우게 된 Ajax, WebSocket, Socket.io의 비교는 다음과 같습니다.  
